@@ -26,7 +26,7 @@
 2. Sorted string Table (SS Tables): It is used for persistent key value storage in nodes
 3. Bloom Filter : It is used to search which SS table contains the key.
 
-[Design](images/KeyValueStoreDesign.png)
+[Design](./images/KeyValueStoreDesign.png)
 
 
 

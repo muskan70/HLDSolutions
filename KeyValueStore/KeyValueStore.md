@@ -12,14 +12,14 @@
 4. Low Latency: System should return value corresponding to given key with minimum latency.
 
 ### Points to discuss
-> **Data Partitioning**: using consistent hashing to allow automatic scaling and heteroginity.
-> **Data Replication**: across multiple data centres 
-> **Consistency**: eventual consistency maintained using version vectors
-> **Handling Failures**: Using gossip protocol to detect server/node is down, Tempory failure is handled through sloppy quorum -> hinted handoff, parmanent failures are handled via merkel tree
+> **Data Partitioning**: using consistent hashing to allow automatic scaling and heteroginity.<br>
+> **Data Replication**: across multiple data centres.<br> 
+> **Consistency**: eventual consistency maintained using version vectors.<br>
+> **Handling Failures**: Using gossip protocol to detect server/node is down, Tempory failure is handled through sloppy quorum -> hinted handoff, parmanent failures are handled via merkel tree.<br>
 
 ### API Design
 1. GET /api/v1/getValye?key=?
-2. POST /api/v1/put
+2. POST /api/v1/put<br>
     RequestBody:  {key:xxx, value:xxx}
 
 ### Database Design

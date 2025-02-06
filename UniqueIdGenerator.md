@@ -11,11 +11,16 @@
 2. **Highly Available and Reliable**: As Id plays an important role in application, it should be highly available and reliable to proceed other application tasks.
 
 ### Points to discuss
-> **Multi master replication**: auto increment feature of database increasing ID by k(no of database servers)
-> - not good in case of multiple data centres, IDs dont increment with time, issue with servers added or removed.<br>
-> **UUID**: 128 bit length, simple to generate and independent of other servers, easily scaled, low probabilty of collision
-> - cannot be sorted wrt time, non numeric.<br>
-> **Ticket server**: using centralized single server for generating unique numeric IDs
+> **Multi master replication** 
+> - auto increment feature of database increasing ID by k(no of database servers)
+> - not good in case of multiple data centres, IDs dont increment with time, issue with servers added or removed.
+
+> **UUID**
+> - 128 bit length, simple to generate and independent of other servers, easily scaled, low probabilty of collision
+> - cannot be sorted wrt time, non numeric.
+
+> **Ticket server**
+> - using centralized single server for generating unique numeric IDs
 > - Single point of failure
 
 ### Best Approach - Twitter snowflake Approach

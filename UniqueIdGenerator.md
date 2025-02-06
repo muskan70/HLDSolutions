@@ -7,8 +7,8 @@
 4. System should be able to generate 10000 unique IDs per second.
 
 ### Non-Functional Requirements:
-1. **Highly Scalable**: System should support multiple data centres and in each datacentres multiple servers generating unique IDs.
-2. **Highly Available and Reliable**: As Id plays an important role in application, it should be highly available and reliable to proceed other application tasks.
+1. Highly Scalable: System should support multiple data centres and in each datacentres multiple servers generating unique IDs.
+2. Highly Available and Reliable: As Id plays an important role in application, it should be highly available and reliable to proceed other application tasks.
 
 ### Points to discuss
 > **Multi master replication** 

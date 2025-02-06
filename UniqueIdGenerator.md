@@ -12,9 +12,9 @@
 
 ### Points to discuss
 > **Multi master replication**: auto increment feature of database increasing ID by k(no of database servers)
-> - not good in case of multiple data centres, IDs dont increment with time, issue with servers added or removed
+> - not good in case of multiple data centres, IDs dont increment with time, issue with servers added or removed.<br>
 > **UUID**: 128 bit length, simple to generate and independent of other servers, easily scaled, low probabilty of collision
-> - cannot be sorted wrt time, non numeric
+> - cannot be sorted wrt time, non numeric.<br>
 > **Ticket server**: using centralized single server for generating unique numeric IDs
 > - Single point of failure
 

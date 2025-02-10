@@ -42,7 +42,7 @@
 > - If key is present in memory cache, it returs the result.
 > - Else it checks in bloom filter which directs to SSTable containing the key which then returns the result.
 
-![Design](./images/KeyValueStoreDesign.png)
+![Design](./images/KeyValueDatabaseDesign.png)
 
 
 

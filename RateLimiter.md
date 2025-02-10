@@ -34,6 +34,9 @@
 > Partioned by UserId or IPAddress (depending on rateLimiting rules)
 
 ### System Gothrough
+- Rate limiting rules are stored on disk which are frequently cached.
+- When a client sends request to system, load balancer first sends it to rate limiter.
+- Rate limiter fetches rules from cache as well as counter and last requested timestamp from DB, then if request is not rate limited, it is sent to API servers otherwise 429:too many requests response returned to client.  
+- Load balancer can be used as a partial rate limiter if a user has crossed a certain threshold, his info is stored at load balancer and request is returned from load balancer layer only.
 
-
-
+![Design](./images/RateLimiter.png)

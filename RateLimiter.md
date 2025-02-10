@@ -15,14 +15,14 @@
 ### Points To discuss
 1. **RateLimit On userID or IPAddress**: For authenticated users, use UserId otherwise use IPAddress
 2. **RateLimiter Position**: Depends on system usecase, better to create decidated distributed rate limiter service
-> Pros: putting locally on each microservice will use their resource,and also tightly coupled with microservice (problem with scaling up and dowm)
+> Pros: putting locally on each microservice will use their resource and also tightly coupled with microservice (problem with scaling up and dowm)<br>
 > Cons: Extra networking calls to rate Limiter
 3. **Load Balancer as cache for Rate Limiter**: Use load balancer as write back cache( partial rate limiter) once user reaches a certain threshold( this approach is not good for active-active load balancer)
 4. **Rate Limiter Algorithms**: 
-> Token Bucket
-> Leaky Bucket
-> Fixed Window counter
-> Sliding window log
+> Token Bucket<br>
+> Leaky Bucket<br>
+> Fixed Window counter<br>
+> Sliding window log<br>
 > Sliding window counter
 
 ### Rate Limiter Interface Design

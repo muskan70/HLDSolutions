@@ -1,4 +1,5 @@
 ## Text Storage System Design
+Note: Here in this design lot of points are discussed similar to url shortner
 
 ### Functional Requirements
 1. User should be able to store a huge text into system. 
@@ -26,3 +27,13 @@
 - Returns text stored corresponding to that url
 
 ### Database Design
+1. For storing huge files in GB, S3 object storage can be used.
+2. **Schema**: UniqueID, urlToStoredText, shortURL, userId, createTime, expireTime, clicks
+3. Single Leader Replication to avoid collisions 
+4. Data Partitioning based on range of shortURL, hashes support even partitioning
+5. B+ tree index based on faster reads
+6. CDNs can be used for faster reads
+
+### Write Path
+> write first in S3, then add entry in database to avoid invalid entries.
+> Popolating CDN: write through CDN can help here as cache miss is quite expensive here due to huge file size.

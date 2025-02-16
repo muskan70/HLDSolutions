@@ -18,6 +18,13 @@
 - Average Url Length = 100 bytes
 - Total storage = 1 Trillion * 100 bytes = 100 TB
 
+### Points to discuss
+> **Url Shortening** : hash function can be used
+> - Hash length: hash value consist of [0-9,a-z,A-Z] so, 10+26+26 = 62^n >= 1 trillion => n=7
+> - Use of in built hash functions like md5, SHA-1, CRC32 : problem of hash collision as well as length of hash is quite large.
+> - **Base62 Conversion**: Use a unique Id generator for each long Url and convert that id into base 62. 
+
+
 ### API Design
 1. POST /api/v1/data/shorten
 - Request Parameter {longUrl: URL string}
@@ -32,3 +39,19 @@
 - Returns count analytics of how many times this url has been accessed or clicked.
 
 ### Database Design
+1. **Schema**: UniqueID, longURL, shortURL, userId, createTime, expireTime, clicks
+2. Single Leader Replication to avoid collisions 
+3. Data Partitioning based on range of shortURL, hashes support even partitioning
+4. B+ tree index based on faster reads
+
+### Cache Design
+1. Hot Links can be cached for faster reads
+2. Populating Cache through write around cache + LRU eviction
+
+### Analytics Discussion
+1. Push click info on log based message broker -> Kafka partitioned on shortUrl
+2. Clicks can be then aggregated using spark streaming consumer -> mini batch updates on DB
+3. Ensure idempotent updates on database : idempotency keyse can be used here to avoid grabing locks
+
+
+

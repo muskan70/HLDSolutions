@@ -35,5 +35,5 @@ Note: Here in this design lot of points are discussed similar to url shortner
 6. CDNs can be used for faster reads
 
 ### Write Path
-> write first in S3, then add entry in database to avoid invalid entries.
-> Popolating CDN: write through CDN can help here as cache miss is quite expensive here due to huge file size.
+> Write first in S3, then add entry in database to avoid invalid entries.<br>
+> Populating CDN: write through CDN can help here as cache miss is quite expensive here due to huge file size.

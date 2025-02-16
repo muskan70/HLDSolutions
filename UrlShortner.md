@@ -51,7 +51,7 @@
 ### Analytics Discussion
 1. Push click info on log based message broker -> Kafka partitioned on shortUrl
 2. Clicks can be then aggregated using spark streaming consumer -> mini batch updates on DB
-3. Ensure idempotent updates on database : idempotency keyse can be used here to avoid grabing locks
+3. Ensure idempotent updates on database : idempotency keys can be used here to avoid grabing locks
 
 
 

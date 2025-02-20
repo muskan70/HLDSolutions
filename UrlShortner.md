@@ -53,6 +53,18 @@
 2. Clicks can be then aggregated using spark streaming consumer -> mini batch updates on DB
 3. Ensure idempotent updates on database : idempotency keys can be used here to avoid grabing locks
 
+### System GoThrough
+> **Url Shortening**
+> - Client enters a long URL.
+> - System checks if long Url present in DB, if yes returns the corresponding short Url.
+> - Otherwise generate a unique ID, convert it to short URL using base62 conversion.
+> - Write this entry to database and returns the short URL to client.
+
+> **Url Redirection**
+> - Client clicks the short URL. 
+> - System checks if short Url present in cache, if yes returns the corresponding long Url.
+> - Otherwise fetch long URL from database, and returns to client.
+
 ![Design](./images/UrlShortner.png)
 
 

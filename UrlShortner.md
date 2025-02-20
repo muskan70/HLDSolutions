@@ -53,5 +53,7 @@
 2. Clicks can be then aggregated using spark streaming consumer -> mini batch updates on DB
 3. Ensure idempotent updates on database : idempotency keys can be used here to avoid grabing locks
 
+![Design](./images/UrlShortner.png)
+
 
 

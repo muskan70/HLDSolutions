@@ -49,7 +49,7 @@
 
 ### URL Frontier
 **Priortizer-> Front Queues -> Front Queue Selector -> Back Queues Router -> Back Queues -> Back Queues Selector -> Workers** 
-![URL Frontier](./images/URLFrontier.png)
+![URL Frontier](./images/URLfrontier.png)
 
 ### System GoThrough
 

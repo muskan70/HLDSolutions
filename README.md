@@ -6,3 +6,4 @@
 5. ![Text Storage like Pastebin](./TextStorage.md)
 6. ![Web Crawler](./WebCrawler.md)
 7. ![Notification Service](./NotificationService.md)
+8. ![News Feed System](./NewsFeedSystem.md)

@@ -60,23 +60,24 @@
 ### System GoThrough
 1. Seed Urls are passed to Url Frontier.
 2. In Url Frontier, following process takes places:
-- first priortize the given urls 
-- then push to front queues based on priority
-- from there front queue selector pick random Urls based to priority
-- Futher pass to back queue router which maps the url to back queue based on host using host mapping table
-- Then pushed to back queues 
+> - first priortize the given urls 
+> - then push to front queues based on priority
+> - from there front queue selector pick random Urls based to priority
+> - Futher pass to back queue router which maps the url to back queue based on host using host mapping table
+> - Then pushed to back queues 
 3. Urls are picked by Content Download workers from back queues.
 4. Content Downloader gets IP addresses of URLs from DNS resolver and starts downloading.
 5. Content Parser parses HTML pages and checks if pages are malformed.
 6. After content is parsed and validated, it is passed to the “Content Seen?” component.
 7. “Content Seen” component checks if a HTML page is already in the storage using hash of content.
-- If it is in the storage, this means the same content in a different URL has already been processed. In this case, the HTML page is discarded.
-- If it is not in the storage, the system has not processed the same content before. The content is passed to Link Extractor.
+> - If it is in the storage, this means the same content in a different URL has already been processed. In this case, the HTML page is discarded.
+> - If it is not in the storage, the system has not processed the same content before. The content is passed to Link Extractor.
 8. Link extractor extracts links from HTML pages.
 9. Extracted links are passed to the URL filter.
 10. After links are filtered, they are passed to the “URL Seen?” component.
-11. “URL Seen” component checks if a URL is already in the storage, if yes, it is processed before, and nothing needs to be done.
-12. If a URL has not been processed before, it is added to the URL Frontier.
+11. “URL Seen” component checks if a URL is already in the storage
+> - if yes, it is processed before, and nothing needs to be done.
+> - If a URL has not been processed before, it is added to the URL Frontier.
 
 
 

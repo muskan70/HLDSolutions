@@ -43,11 +43,13 @@
 2. DNS Resolver+ Cachier
 3. Content Downloader
 4. Content Parser <-> Content Storage
-4. Link Extractor <-> Link Storage
+4. Link Extractor
 5. Url Filter <-> Url Storage
+![Web Crawler](./images/WebCrawler.png)
 
 ### URL Frontier
 **Priortizer-> Front Queues -> Front Queue Selector -> Back Queues Router -> Back Queues -> Back Queues Selector -> Workers** 
+![URL Frontier](./images/URLfrontier.png)
 
 ### System GoThrough
 

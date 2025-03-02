@@ -33,6 +33,17 @@
 > - template: string
 > - createdAt: timestamp
 
-### System Go Through
+### Handle Idempotency
+> Use idempotency key for each notification eventId to avoid sending duplicate notifications on client device, if received acknowledgement from client end notification is successfully sent otherwise sent again.
 
-![Notification Service](./NotificationService.md)
+### System Go Through
+1. A service calls APIs provided by notification servers to send notifications.
+2. The notification servers first authenticate user info and check rate-limit per user.
+3. Notification servers fetch metadata such as user info, device token, and notification setting from the cache or database.
+4. A notification event is sent to the corresponding queue for processing. For instance, an iOS push notification event is sent to the iOS PN queue.
+5. Workers pull notification events from message queues.
+6. Workers send notifications to third party services.
+7. If worker fails to send notifications, they are put back in the messaging queue and the workers will retry for a predefined number of times.
+8. Third-party services send notifications to user devices.
+
+![Notification Service](./images/NotificationService.png)

@@ -29,9 +29,9 @@
 > bool rateLimit(long userId, string ipAddress, string serviceName, string api, date requestTime)
 
 ### Database Design
-> Inmemory Cache: Use of Redis/Memcache<br>
-> Single Leader Replication for consistent writes<br>
-> Partioned by UserId or IPAddress (depending on rateLimiting rules)
+- Inmemory Cache: Use of Redis/Memcache<br>
+- Single Leader Replication for consistent writes<br>
+- Partioned by UserId or IPAddress (depending on rateLimiting rules)
 
 ### System Gothrough
 - Rate limiting rules are stored on disk which are frequently cached.

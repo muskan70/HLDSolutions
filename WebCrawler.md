@@ -38,6 +38,12 @@
 > - Anchor text: string
 > - Link Type: internal or external
 
+4. Host Mapping Table
+> - HostName : string
+> - Ip Address: string
+> - Last crawled: timestamp 
+> - Next Allowed Crawled: timestamp
+
 ### Design Components
 1. **URL Frontier**: It maintains the URLs to be crawled and manages their priortization and host politeness by following their robots.txt policies.
 2. **DNS Resolver + Cache**: It is used to get IP address of Url host, to reduce DNS requests latency cache is maintained.
@@ -63,7 +69,7 @@
 4. Content Downloader gets IP addresses of URLs from DNS resolver and starts downloading.
 5. Content Parser parses HTML pages and checks if pages are malformed.
 6. After content is parsed and validated, it is passed to the “Content Seen?” component.
-7. “Content Seen” component checks if a HTML page is already in the storage.
+7. “Content Seen” component checks if a HTML page is already in the storage using hash of content.
 - If it is in the storage, this means the same content in a different URL has already been processed. In this case, the HTML page is discarded.
 - If it is not in the storage, the system has not processed the same content before. The content is passed to Link Extractor.
 8. Link extractor extracts links from HTML pages.

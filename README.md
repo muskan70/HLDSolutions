@@ -4,3 +4,5 @@
 3. ![Rate Limiter](./RateLimiter.md)
 4. ![Url Shortner like TinyURL](./UrlShortner.md)
 5. ![Text Storage like Pastebin](./TextStorage.md)
+6. ![Web Crawler](./WebCrawler.md)
+7. ![Notification Service](./NotificationService.md)

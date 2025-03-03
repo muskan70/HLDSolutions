@@ -8,7 +8,7 @@
 5. Feed can consist of media files like images, videos.
 
 ### Non Functional Requirements
-1.**Scale of the system**: Distribution of Users: We can consider around 1 billion users with 25% daily active users, out of which 10% writes post => Reads >> Writes
+1. **Scale of the system**: We can consider around 1 billion users with 25% daily active users, out of which 10% writes post => Reads >> Writes
 2. **Latency**: 
 - Feeds should be fetched with minimal latency as low as 500ms.
 - Publishing Post should take <500 ms.
@@ -48,7 +48,7 @@
 > - SQL, Single Leader Replication, Partitioned and indexed on UserId
 
 4. Follower/Following DB
-> - Key Value Database : two types of queries here, one is getFollowers, other is getFollowing, so indexed on both
+> - Graph Database : two types of queries here, one is getFollowers, other is getFollowing
 
 5. Post DB
 > - Schema: PosterId, PostId, Titile, content, image Link ,timestamp
@@ -61,6 +61,10 @@
 7. Comments DB (not considering nested comments)
 > - Schema: PostId, userId , content, timestamp
 > - MySQL, Single Leader Replication, Sharded by PostId, sorted by timestamp
+
+![Design](./images/NewsFeed.png)
+
+### System GoThrough
 
 
 

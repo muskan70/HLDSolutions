@@ -65,6 +65,14 @@
 ![Design](./images/NewsFeed.png)
 
 ### System GoThrough
+1. When a user writes a post it goes from post service post API to store in PostDB,
+2. Post service also sends post to fan out service which gets followers of posterId from followeDB as well as popular users list.
+- if a post belongs to popular user, it is added to post queue as a popular post with posterId.
+- otherwise post is added to post queue along with followers list.
+3. Feed Generator consumes posts from queue, if a post belongs to a popular user then post is added to popular feed else added to regular news feed of each followerId.
+4. When a user like or comment on a post, it goes to like/comment service and stored in likeDB and commentDB.
+5. Like/comment service also sends updates of post likes/comments to fan out service which are further pushed to popularity queue, then consumed by feed popularity updator, and updates regular feed DB and popular feed Db
+6. When any user enters the app to read news feed he will get already prepared feeds from regular feeds DB and popular feeds of all popular users he follows from news feed aggregator service.
 
 
 

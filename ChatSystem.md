@@ -60,8 +60,8 @@
 > - User connects to respective chat server and presence servers through WebSocket.
 
 2. **Message Flow**
-> User 1 sends a chat message to Chat server1 via web socket connection.
-> Chat server1 sends the message to the message sync queue.
-> The message is stored in a key-value store.
-> If User2 is online, the message is forwarded to Chat server2 where User2 is connected via web socket.
-> If User2 is offline, a push notification is sent from push notification (PN) servers.
+> - User 1 sends a chat message to Chat server1 via web socket connection.
+> - Chat server1 sends the message to the message sync queue.
+> - The message is stored in a key-value store.
+> - If User2 is online, the message is forwarded to Chat server2 where User2 is connected via web socket.
+> - If User2 is offline, a push notification is sent from push notification (PN) servers.

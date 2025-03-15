@@ -28,9 +28,13 @@
 > - Request Body Parametres => name, email, phone, password
 > - Returns userID
 
-2. POST /api/v1/createGroup
-- Request Body Parametres => Group Name, Admin UserId, List{Users}
-- Returns chatID
+2. Group Service - create group, add User to group, remove user from group 
+> - POST /api/v1/createGroup
+> - Request Body Parametres => Group Name, Admin UserId, List{Users}
+> - Returns groupID
+
+3. Chat History Service
+> - GET /api/v1/chats?{userId}
 
 ### Database Design
 1. UserDB

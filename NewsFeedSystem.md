@@ -66,7 +66,7 @@
 
 ### System GoThrough
 1. When a user writes a post it goes from post service post API to store in PostDB,
-2. Post service also sends post to fan out service which gets followers of posterId from followeDB as well as popular users list.
+2. Post service also sends post to fan out service which gets followers of posterId from followerDB as well as popular users list.
 - if a post belongs to popular user, it is added to post queue as a popular post with posterId.
 - otherwise post is added to post queue along with followers list.
 3. Feed Generator consumes posts from queue, if a post belongs to a popular user then post is added to popular feed else added to regular news feed of each followerId.

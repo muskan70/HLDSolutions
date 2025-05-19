@@ -25,6 +25,13 @@ Google search bar suggesting full search terms for single or multiple words
 Google search bar design basically going to use same trie Approach as used in typeahead suggestion but this will be done on a huge scale.
 
 1. **Data Gathering Service**
+- When a user clicks a word, upload that action logs to HDFS and then once a day run an aggragation job to compute top suggestions for each prefix using min heap, once done create a new trie.
+
+2. **TrieDB Storage**
+- Option1: store in documentDB by serializing the trie
+- Option2: Key Value store where A trie can be represented in a hash table form, every prefix in the trie is mapped to a key in a hash table and data on each trie node is mapped to a value in a hash table.
+- Range Based Partitioning for better data locality, also hotspots can be further repartitioned.
+
 2. **Query Service**: 
-> - better to use web sockets
-> - stateful server
+> - better to use web sockets for faster querying every time when user types next character
+> - stateful server helps in traversing the trie as it will remember the last accessed trie node so we have to do just jump to next node -> O(1) time 

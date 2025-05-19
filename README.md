@@ -1,4 +1,5 @@
 ## System Design Solutions:
+
 1. [Distributed Key Value Store](./KeyValueStore.md)
 2. [Distributed Unique Id Generator](./UniqueIdGenerator.md)
 3. [Rate Limiter](./RateLimiter.md)
@@ -10,3 +11,7 @@
 9. [Chat System](./ChatSystem.md)
 10. [Typeahead Suggestion](./TypeAheadSuggestion.md)
 11. [Search Auto Complete System](./SearchAutoCompleteSystem.md)
+
+**Resources**
+1. Alex Yu's System Design Books
+2. Jordon has no life Youtube channel.

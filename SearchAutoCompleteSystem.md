@@ -22,5 +22,9 @@ Google search bar suggesting full search terms for single or multiple words
 - 20 billion * (10 search terms * 20 characters per term + prefix) = 20 billion * 200 bytes per search query = 4 TB -> can't be stored on client's device nor on single server
 
 ### Google Search bar Auto Suggestion High Level Design 
+Google search bar design basically going to use same trie Approach as used in typeahead suggestion but this will be done on a huge scale.
+
 1. **Data Gathering Service**
-2. **Query Service**
+2. **Query Service**: 
+> - better to use web sockets
+> - stateful server

@@ -8,4 +8,5 @@
 7. [Notification Service](./NotificationService.md)
 8. [News Feed System](./NewsFeedSystem.md)
 9. [Chat System](./ChatSystem.md)
-10. [Search Auto Complete System + Typeahead Suggestion](./SearchAutoCompleteSystem.md)
+10. [Typeahead Suggestion](./TypeAheadSuggestion.md)
+11. [Search Auto Complete System](./SearchAutoCompleteSystem.md)

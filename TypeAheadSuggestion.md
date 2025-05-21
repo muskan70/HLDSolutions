@@ -15,19 +15,19 @@ Typeahead suggestion by Google keyboard, samsung keyboard used in mobiles during
 - To store prefix for each word ->(5*200k) = 1 million entries
 - 1 million * (5 bytes for word  + 15 bytes for suggestions) = 20 MB -> can be easily stored on client's device
 
-### Typeahead Suggestion Design Approach
-#### Local Non Caching Approach: 
+### Design Approaches
+1. **Local Non Caching Approach:** 
 - Store sorted/ordered hashmap of words with counts,
 - when user types a word, query hashmap to get all words with same prefix as query using binary search
 - then find top k suggestions using min heap of size k
 - very slow computation : Search Complexity -> O(nlogk)
 
-#### Local Caching Approach:
+2. **Local Caching Approach:**
 - Store sorted map of prefix to its top k suggestions
 - Search Complexity -> O(len(prefix))
 - Memory footprint wrt to each term -> O(n^2) to store all prefixes
 
-#### Trie Approach:
+3. **Trie Approach:**
 - Store Trie of words such that each node stores top k suggestions of that prefix
 - Traversing the prefix via trie takes O(1) time i.e when user type next character, getting suggestion takes O(1) time so jumping from one search term to another takes constant time.
 - Memory footprint wrt to each term -> O(n)

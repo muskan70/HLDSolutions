@@ -1,16 +1,17 @@
 ## System Design Solutions:
 
-1. [Distributed Key Value Store](./KeyValueStore.md)
-2. [Distributed Unique Id Generator](./UniqueIdGenerator.md)
-3. [Rate Limiter](./RateLimiter.md)
-4. [Url Shortner like TinyURL](./UrlShortner.md)
-5. [Text Storage like Pastebin](./TextStorage.md)
-6. [Web Crawler](./WebCrawler.md)
-7. [Notification Service](./NotificationService.md)
-8. [News Feed System](./NewsFeedSystem.md)
-9. [Chat System](./ChatSystem.md)
-10. [Typeahead Suggestion](./TypeAheadSuggestion.md)
-11. [Search Auto Complete System](./SearchAutoCompleteSystem.md)
+- [Distributed Key Value Store](./KeyValueStore.md)
+- [Distributed Unique Id Generator](./UniqueIdGenerator.md)
+- [Rate Limiter](./RateLimiter.md)
+- [Url Shortner like TinyURL](./UrlShortner.md)
+- [Text Storage like Pastebin](./TextStorage.md)
+- [Web Crawler](./WebCrawler.md)
+- [Notification Service](./NotificationService.md)
+- [News Feed System](./NewsFeedSystem.md)
+- [Chat System](./ChatSystem.md)
+- [Typeahead Suggestion](./TypeAheadSuggestion.md)
+- [Search Auto Complete System](./SearchAutoCompleteSystem.md)
+- [YouTube/Netflix](./YoutubeSystem.md)
 
 **Resources**
 1. Alex Yu's System Design Books

@@ -1,4 +1,4 @@
-## Youtube / Netflix System Design
+## Youtube System Design
 
 ### Functional Requirements
 1. User should be able to upload a video.
@@ -15,7 +15,39 @@
 2. average video size = 300MB
 3. Daily storage = 5 million * 10% * 300 MB = 150TB
 
-### High Level Design
+### API Design
 1. Video Uploading flow
+- POST /api/v1/video/upload
+- upload video metadata and chunks of video
+
 2. Video Streaming flow
+- GET /api/v1/video/get/details
+- return video metadata
+
+### Database Design
+1. SubscribersDB
+- Schema -> {userId, subscribedTo}
+- Graph Database : two types of queries here, one is getSubscribers, other is getSubscribedTo : Shard, Index and partition on userId
+
+2. VideoDetailsDB
+- Schema -> {userId, videosId, timestamp, videoName, description}
+- MySQL: Shard by userId to get all videos of a user on single node
+- Partitioned by userId, sort by userId + videoId + timestamp
+
+3. UserDB
+- Schema -> { userId, name, email, passwordHash ...}
+- MySQL: partioned + index on userId
+
+4. VideoCommentsDB
+- Schema -> {channelId, videoId, timestamp, userId, comment}
+- Cassandra: Partioned on channelId + videoId + timestamp
+
+5. VideoChunkMetadataDB
+- Schema -> {videoId, encoding, resolution, chunkOrder, hash, URL}
+- MySQL: partition on videoId to get all chunks of video on same node
+- sort by videoId, encoding, resolution, chunkOrder
+
+6. VideoChunk Storage - S3: less expensive, option2 can be HDFS: offers better data locality but expensive
+
+
 

@@ -37,3 +37,5 @@ Typeahead suggestion by Google keyboard, samsung keyboard used in mobiles during
 > - Updating a trie in real time will be quite complex because if a single write turns a node(word) into popular ones, it needs to be propagated all the way up the tree.<br>
 > - Also all writes needs to be refected on every client device, so better to replace the trie with new one with all writes/updates once per day.<br>
 > - Steps -> When a user clicks a word, upload that action to HDFS and then once a day run a spark job to compute top suggestions for each prefix, once done create a new trie and send it to all client devices.
+
+![Trie Update Design](./images/TypeaheadSuggestionTrieUpdate.png)

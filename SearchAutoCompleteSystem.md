@@ -34,6 +34,8 @@ Google search bar design basically going to use same trie Approach as used in ty
 - Option2: Key Value store where A trie can be represented in a hash table form, every prefix in the trie is mapped to a key in a hash table and data on each trie node is mapped to a value in a hash table.
 - Range Based Partitioning for better data locality, also hotspots can be further repartitioned.
 
-2. **Query Service**: 
+2. **Suggestion Service**: 
 - Use web sockets for faster querying every time when user types next character
 - stateful server helps in traversing the trie as it will remember the last accessed trie node so we have to do just jump to next node -> O(1) time
+
+![Design](./images/SearchAutoSuggestionDesign.png)

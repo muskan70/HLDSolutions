@@ -37,31 +37,64 @@
 - POST /api/v1/files/list_revisions
 - RequestParams: { path: The path to the file you want to get the revision history, limit: The maximum number of revisions to return }
 
-### File Upload Flow
-Instead of uploading a file as one unit, split file into smaller chunks.
-- Pros: parallel uploading to S3, only load modified chunks on file changes
-- Cons: Added complexity on client's end to do file diff, also have to keep track of file chunks in DB.
-
 ### Database Design
 1. UserDB
-- Schema -> { userId, name, email, passwordHash ...}
+- Schema -> {userId, name, email, passwordHash ...}
 - MySQL: shard + index on userId
 
-2. FilePermissionsDB
-- Schema -> { userId, docId}
+2. UserDeviceDB
+- Schema -> {userId, deviceId, lastLoggedIn}
+- MySQL: shard on userId
+
+3. FilePermissionsDB
+- Schema -> {userId, docId}
 - MySQL: shard + index on userId
 
-3. FileDetailsDB
-- Schema -> {fileId, timestamp, fileName, description}
+4. FileDetailsDB
+- Schema -> {fileId, fileName, relativePath, latestVersion, createdAt, lastUpdated}
 - MySQL: Shard by fileId
 
-5. FileChunkMetadataDB
-- Schema -> {fileId, version, chunkHash, URL}
-- MySQL: partition on fileId to get all chunks of file on same node
-- Indexing on fileId + version
+5. FileVersionDB
+- Schema -> {id, fileId, versionNumber createdAt}
 
-6. FileChunk Storage
-- A blob storage system is used to store chunks of files
+5. FileBlockMetadataDB
+- Schema -> {fileId, versionId, blockHash, URL}
+- MySQL: partition on fileId to get all blocks of file on same node
+- Indexing on fileId + versionId
+
+6. FileBlock Storage
+- A blob storage system is used to store blocks of files
 - S3: less expensive, option2 can be HDFS: offers better data locality but expensive
+
+### File Upload Flow
+Instead of uploading a file as one unit, split file into smaller blocks.
+- Pros: parallel uploading to S3, only load modified blocks on file changes
+- Cons: Added complexity on client's end to do file diff, also have to keep track of file blocks in DB.
+
+**Add file metadata**
+> 1. Client 1 sends a request to add the metadata of the new file.
+> 2. Store the new file metadata in metadata DB and change the file upload status to “pending”.
+> 3. Notify the notification service that a new file is being added.
+> 4. The notification service notifies relevant clients (client 2) that a file is being uploaded.
+**Upload files to cloud storage**
+> 1. Client 1 uploads the content of the file to block servers.
+> 2. Block servers chunk the files into blocks, compress, encrypt the blocks, and upload them to cloud storage.
+> 3. Once the file is uploaded, cloud storage triggers upload completion callback. The request is sent to API servers.
+> 4. File status changed to “uploaded” in Metadata DB.
+> 5. Notify the notification service that a file status is changed to “uploaded”
+> 6. The notification service notifies relevant clients (client 2) that a file is fully uploaded.
+
+### File Download Flow
+1. Notification service informs client 2 that a file is changed somewhere else.
+2. Once client 2 knows that new updates are available, it sends a request to fetch metadata.
+3. API servers call metadata DB to fetch metadata of the changes.
+4. Metadata is returned to the API servers.
+5. Client 2 gets the metadata.
+6. Once the client receives the metadata, it sends requests to block servers to download blocks.
+7. Block servers first download blocks from cloud storage.
+8. Cloud storage returns blocks to the block servers.
+9. Client 2 downloads all the new blocks to reconstruct the file.
+
+
 
 

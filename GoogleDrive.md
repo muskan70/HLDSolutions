@@ -71,18 +71,19 @@ Instead of uploading a file as one unit, split file into smaller blocks.
 - Pros: parallel uploading to S3, only load modified blocks on file changes
 - Cons: Added complexity on client's end to do file diff, also have to keep track of file blocks in DB.
 
-**Add file metadata**
+##### Add file metadata
 > 1. Client 1 sends a request to add the metadata of the new file.
 > 2. Store the new file metadata in metadata DB and change the file upload status to “pending”.
 > 3. Notify the notification service that a new file is being added.
 > 4. The notification service notifies relevant clients (client 2) that a file is being uploaded.
-**Upload files to cloud storage**
-> 1. Client 1 uploads the content of the file to block servers.
-> 2. Block servers chunk the files into blocks, compress, encrypt the blocks, and upload them to cloud storage.
-> 3. Once the file is uploaded, cloud storage triggers upload completion callback. The request is sent to API servers.
-> 4. File status changed to “uploaded” in Metadata DB.
-> 5. Notify the notification service that a file status is changed to “uploaded”
-> 6. The notification service notifies relevant clients (client 2) that a file is fully uploaded.
+
+##### Upload files to cloud storage**
+> 2.1 Client 1 uploads the content of the file to block servers.
+> 2.2 Block servers chunk the files into blocks, compress, encrypt the blocks, and upload them to cloud storage.
+> 2.3 Once the file is uploaded, cloud storage triggers upload completion callback. The request is sent to API servers.
+> 2.4 File status changed to “uploaded” in Metadata DB.
+> 2.5 Notify the notification service that a file status is changed to “uploaded”
+> 2.6 The notification service notifies relevant clients (client 2) that a file is fully uploaded.
 
 ### File Download Flow
 1. Notification service informs client 2 that a file is changed somewhere else.
@@ -95,6 +96,14 @@ Instead of uploading a file as one unit, split file into smaller blocks.
 8. Cloud storage returns blocks to the block servers.
 9. Client 2 downloads all the new blocks to reconstruct the file.
 
+### Some Important System Components
+1. **Block servers**: Block servers upload blocks to cloud storage. Block storage, referred to as block-level storage, is a technology to store data files on cloud-based environments. A file can be split into several blocks, each with a unique hash value, stored in our metadata database. Each block is treated as an independent object and stored in our storage system(S3). To reconstruct a file, blocks are joined in a particular order.
 
+2. **Cloud storage**: A file is split into smaller blocks and stored in cloud storage.
 
+3. **Cold storage**: Cold storage is a computer system designed for storing inactive data, meaning files are not accessed for a long time.
+
+4. **Notification service**: It is a publisher/subscriber system that allows data to be transferred from notification service to clients as certain events happen. In our specific case, notification service notifies relevant clients when a file is added/edited/removed elsewhere so they can pull the latest changes.
+
+5. **Offline backup queue**: If a client is offline and cannot pull the latest file changes, the offline backup queue stores the info so changes will be synced when the client is online.
 

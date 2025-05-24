@@ -24,6 +24,22 @@
 - GET /api/v1/video/get/details
 - return video metadata
 
+### Video Uploading Flow
+The flow is broken down into three processes running in parallel.
+1. **Upload the actual video**: Uploading a video as a whole unit is inefficient. We can split a video into smaller chunks by GOP alignment. This allows fast resumable uploads when the previous upload failed. The job of splitting a video file by GOP can be implemented by the client to improve the upload speed
+2. **Update video metadata** : Metadata contains information about video URL, size, resolution, format, user info, etc.
+3. **Upload video to CDN**: Popular videos (of channels with millions of subscribers) are uploaded to CDN. 
+
+The video uploading steps are as follows:
+> 1. Videos are uploaded to the original storage.
+> 2. Transcoding servers fetch videos from the original storage and start transcoding.
+> 3. Once transcoding is complete, the following two steps are executed in parallel:
+>   + Transcoded videos are sent to transcoded storage. Then transcoded videos are distributed to CDN
+>   + Transcoding completion events are queued in the completion queue. Completion handler contains a bunch of workers that continuously pull event data from the queue.
+> 4. Completion handler updates the metadata database (chunks metadata and video metadata) and cache when video transcoding is complete.
+> 5. API servers inform the client that the video is successfully uploaded and is ready for streaming.
+> 6. Upload popular videos to CDNs. Use push based approach for popular ones and pull based approach for others.
+
 ### Database Design
 1. SubscribersDB
 - Schema -> {userId, subscribedTo}
@@ -50,23 +66,6 @@
 6. VideoChunk Storage
 - A blob storage system is used to store original videos as well as transcoded videos
 - S3: less expensive, option2 can be HDFS: offers better data locality but expensive
-
-### Video Uploading Flow
-The flow is broken down into three processes running in parallel.
-1. **Upload the actual video**: Uploading a video as a whole unit is inefficient. We can split a video into smaller chunks by
-GOP alignment. This allows fast resumable uploads when the previous upload failed. The job of splitting a video file by GOP can be implemented by the client to improve the upload speed
-2. **Update video metadata** : Metadata contains information about video URL, size, resolution, format, user info, etc.
-3. **Upload video to CDN**: Popular videos (of channels with millions of subscribers) are uploaded to CDN. 
-
-The video uploading steps are as follows:
-> 1. Videos are uploaded to the original storage.
-> 2. Transcoding servers fetch videos from the original storage and start transcoding.
-> 3. Once transcoding is complete, the following two steps are executed in parallel:
->   + Transcoded videos are sent to transcoded storage. Then transcoded videos are distributed to CDN
->   + Transcoding completion events are queued in the completion queue. Completion handler contains a bunch of workers that continuously pull event data from the queue.
-> 4. Completion handler updates the metadata database (chunks metadata and video metadata) and cache when video transcoding is complete.
-> 5. API servers inform the client that the video is successfully uploaded and is ready for streaming.
-> 6. Upload popular videos to CDNs. Use push based approach for popular ones and pull based approach for others.
 
 ### Video Transcoding
 The original video is split into video, audio, and metadata. Here are some of the tasks that can be applied on a video file:

@@ -77,12 +77,12 @@ Instead of uploading a file as one unit, split file into smaller blocks.
 > 3. Notify the notification service that a new file is being added.
 > 4. The notification service notifies relevant clients (client 2) that a file is being uploaded.
 
-##### Upload files to cloud storage**
-> 2.1 Client 1 uploads the content of the file to block servers.
-> 2.2 Block servers chunk the files into blocks, compress, encrypt the blocks, and upload them to cloud storage.
-> 2.3 Once the file is uploaded, cloud storage triggers upload completion callback. The request is sent to API servers.
-> 2.4 File status changed to “uploaded” in Metadata DB.
-> 2.5 Notify the notification service that a file status is changed to “uploaded”
+##### Upload files to cloud storage
+> 2.1 Client 1 uploads the content of the file to block servers.<br>
+> 2.2 Block servers chunk the files into blocks, compress, encrypt the blocks, and upload them to cloud storage.<br>
+> 2.3 Once the file is uploaded, cloud storage triggers upload completion callback. The request is sent to API servers.<br>
+> 2.4 File status changed to “uploaded” in Metadata DB.<br>
+> 2.5 Notify the notification service that a file status is changed to “uploaded”<br>
 > 2.6 The notification service notifies relevant clients (client 2) that a file is fully uploaded.
 
 ### File Download Flow
@@ -97,13 +97,21 @@ Instead of uploading a file as one unit, split file into smaller blocks.
 9. Client 2 downloads all the new blocks to reconstruct the file.
 
 ### Some Important System Components
-1. **Block servers**: Block servers upload blocks to cloud storage. Block storage, referred to as block-level storage, is a technology to store data files on cloud-based environments. A file can be split into several blocks, each with a unique hash value, stored in our metadata database. Each block is treated as an independent object and stored in our storage system(S3). To reconstruct a file, blocks are joined in a particular order.
+1. **Block servers**: Block servers upload blocks to cloud storage. Block storage, referred to as block-level storage, is a technology to store data files on cloud-based environments. A file can be split into several blocks, each with a unique hash value, stored in our metadata database. Each block is treated as an independent object and stored in our storage system(S3). To reconstruct a file, blocks are joined in a particular order. Instead of uploading the whole file to the storage system, only modified blocks are transferred.
+- Delta sync: When a file is modified, only modified blocks are synced instead of the whole file using a sync algorithm.
+- Compression: Applying compression on blocks can significantly reduce the data size. gzip and bzip2 are used to compress text files. 
 
 2. **Cloud storage**: A file is split into smaller blocks and stored in cloud storage.
 
-3. **Cold storage**: Cold storage is a computer system designed for storing inactive data, meaning files are not accessed for a long time.
+3. **Cold storage**: Cold storage is a computer system designed for storing inactive data, meaning files are not accessed for a long time. Cold storage like Amazon S3 glacier is much cheaper than S3.
 
-4. **Notification service**: It is a publisher/subscriber system that allows data to be transferred from notification service to clients as certain events happen. In our specific case, notification service notifies relevant clients when a file is added/edited/removed elsewhere so they can pull the latest changes.
+4. **Notification service**: It is a publisher/subscriber system that allows data to be transferred from notification service to clients as certain events happen. In our specific case, notification service notifies relevant clients when a file is added/edited/removed elsewhere so they can pull the latest changes. Here long polling can be used.
 
 5. **Offline backup queue**: If a client is offline and cannot pull the latest file changes, the offline backup queue stores the info so changes will be synced when the client is online.
 
+### Storage Space Optimizations
+- De-duplicate data blocks: Eliminating redundant blocks with same hash value at the account level is an easy way to save space.
+- Adopt an intelligent data backup strategy: Two optimization strategies can be applied:
+-  Set a limit: We can set a limit for the number of versions to store. If the limit is reached, the oldest version will be replaced with the new version.
+-  Keep valuable versions only: Some files might be edited frequently. We give more weight to recent versions. 
+- Moving infrequently used data to cold storage: Cold data is the data that has not been active for months or years.

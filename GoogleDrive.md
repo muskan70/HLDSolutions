@@ -83,25 +83,28 @@ Instead of uploading a file as one unit, split file into smaller blocks.
 > 2.3 Once the file is uploaded, cloud storage triggers upload completion callback. The request is sent to API servers.<br>
 > 2.4 File status changed to “uploaded” in Metadata DB.<br>
 > 2.5 Notify the notification service that a file status is changed to “uploaded”<br>
-> 2.6 The notification service notifies relevant clients (client 2) that a file is fully uploaded.
+> 2.6 The notification service notifies relevant clients (client 2) that a file is fully uploaded.<br>
+
 ![File Upload Flow](./images/FileUploadFlow.png)
 
 ### File Download Flow
-1. Notification service informs client 2 that a file is changed somewhere else.
-2. Once client 2 knows that new updates are available, it sends a request to fetch metadata.
-3. API servers call metadata DB to fetch metadata of the changes.
-4. Metadata is returned to the API servers.
-5. Client 2 gets the metadata.
-6. Once the client receives the metadata, it sends requests to block servers to download blocks.
-7. Block servers first download blocks from cloud storage.
-8. Cloud storage returns blocks to the block servers.
-9. Client 2 downloads all the new blocks to reconstruct the file.
+> 1. Notification service informs client 2 that a file is changed somewhere else.
+> 2. Once client 2 knows that new updates are available, it sends a request to fetch metadata.
+> 3. API servers call metadata DB to fetch metadata of the changes.
+> 4. Metadata is returned to the API servers.
+> 5. Client 2 gets the metadata.
+> 6. Once the client receives the metadata, it sends requests to block servers to download blocks.
+> 7. Block servers first download blocks from cloud storage.
+> 8. Cloud storage returns blocks to the block servers.
+> 9. Client 2 downloads all the new blocks to reconstruct the file.
+
 ![File Download Flow](./images/FileDownloadFlow.png)
 
 ### Some Important System Components
 1. **Block servers**: Block servers upload blocks to cloud storage. Block storage, referred to as block-level storage, is a technology to store data files on cloud-based environments. A file can be split into several blocks, each with a unique hash value, stored in our metadata database. Each block is treated as an independent object and stored in our storage system(S3). To reconstruct a file, blocks are joined in a particular order. Instead of uploading the whole file to the storage system, only modified blocks are transferred.
 - Delta sync: When a file is modified, only modified blocks are synced instead of the whole file using a sync algorithm.
 - Compression: Applying compression on blocks can significantly reduce the data size. gzip and bzip2 are used to compress text files. 
+
 ![Block Servers](./images/BlockServers.png)
 
 2. **Cloud storage**: A file is split into smaller blocks and stored in cloud storage.
@@ -115,6 +118,6 @@ Instead of uploading a file as one unit, split file into smaller blocks.
 ### Storage Space Optimizations
 - De-duplicate data blocks: Eliminating redundant blocks with same hash value at the account level is an easy way to save space.
 - Adopt an intelligent data backup strategy: Two optimization strategies can be applied:
--  Set a limit: We can set a limit for the number of versions to store. If the limit is reached, the oldest version will be replaced with the new version.
--  Keep valuable versions only: Some files might be edited frequently. We give more weight to recent versions. 
+  - Set a limit: We can set a limit for the number of versions to store. If the limit is reached, the oldest version will be replaced with the new version.
+  - Keep valuable versions only: Some files might be edited frequently. We give more weight to recent versions. 
 - Moving infrequently used data to cold storage: Cold data is the data that has not been active for months or years.

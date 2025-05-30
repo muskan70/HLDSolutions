@@ -99,6 +99,7 @@ The resource manager works as follows:
 > - Then it instructs the chosen task worker to run the task.<br>
 > - The task scheduler binds the task/worker info and puts it in the running queue.<br>
 > - The task scheduler removes the job from the running queue once the job is done.
+
 ![Resource Manager](./images/VideoTranscodingResourceManager.png)
 
 4. **Task Worker**: Task workers run the tasks which are defined in the DAG. Different task workers may run different tasks like: Watermark, Encoder, Thumbnail, Merger, etc.
@@ -121,9 +122,13 @@ The resource manager works as follows:
 - Need to store some metadata with videos otherwise we have to do a super expensive distributed query on user Videos table.
 - Instead of doing term specific partitioning for popular terms (as putting all videos metadata on single node might be not possible), better to use round robin in all documents nad keep a local index per partition on fixed number of nodes.
 
+![System Design](./images/Youtube.png)
+
 ### Optimizations
-1. Speed optimization: parallelize video uploading by splitting a video into smaller chunks by GOP alignment.
-2. Speed optimization: place upload centers close to users using CDNs.
-3. Speed optimization: parallelism in video encoding via message queues
-4. Safety optimization: pre-signed upload URL to allow uploading videos at right location by authorized users only.
-5. Safety optimization: protect copyrights of videos by using Digital rights management (DRM) systems, AES encryption and Visual watermarking.
+1. Speed optimizations:
+- parallelize video uploading by splitting a video into smaller chunks by GOP alignment.
+- place upload centers close to users using CDNs.
+- parallelism in video encoding via message queues
+2. Safety optimizations:
+- pre-signed upload URL to allow uploading videos at right location by authorized users only.
+- protect copyrights of videos by using Digital rights management (DRM) systems, AES encryption and Visual watermarking.

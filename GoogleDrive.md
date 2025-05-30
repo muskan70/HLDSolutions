@@ -115,6 +115,8 @@ Instead of uploading a file as one unit, split file into smaller blocks.
 
 5. **Offline backup queue**: If a client is offline and cannot pull the latest file changes, the offline backup queue stores the info so changes will be synced when the client is online.
 
+![System Design](./images/GoogleDrive.png)
+
 ### Storage Space Optimizations
 - De-duplicate data blocks: Eliminating redundant blocks with same hash value at the account level is an easy way to save space.
 - Adopt an intelligent data backup strategy: Two optimization strategies can be applied:
